@@ -7,12 +7,15 @@ import axios from 'axios';
 
 function App() {
   const [images, setImage] = useState([]);
-  const accessKey = process.env.REACT_APP_ACCESSKEY;
+  ;
   useEffect(() => {
     const getApi = "https://api.unsplash.com";
+    const getAccessKey = process.env.REACT_APP_ACCESSKEY
 
     axios
-    .get(`${getApi}/photos/random?client_id=${accessKey}&count=${count}`)
+    .get(`${getApi}/photos/random?client_id=${getAccessKey}&count=20`)
+    .then(res => console.log(res.data));
+    })
   return (
     <div>
       <Header />
