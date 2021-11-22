@@ -13,9 +13,10 @@ function App() {
     const getAccessKey = process.env.REACT_APP_ACCESSKEY
 
     axios
-    .get(`${getApi}/photos/random?client_id=${getAccessKey}&count=20`)
+    .get(`${getApi}/photos/random?client_id=${getAccessKey}&count=10`)
     .then(res => console.log(res.data));
     })
+    
   return (
     <div>
       <Header />
