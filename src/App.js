@@ -3,6 +3,9 @@ import Header from "./component/Header";
 import Loader from "./component/Loader";
 import UnsplashImage from "./component/UnsplashImage";
 import axios from 'axios';
+import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 function App() {
@@ -25,5 +28,6 @@ function App() {
     </div>
   );
 }
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default App;

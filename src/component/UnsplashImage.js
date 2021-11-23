@@ -1,9 +1,16 @@
+import styled from 'styled-components';
 
-const UnsplashImage = () => {
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const UnsplashImage = ({ url, key }) => {
     return (
-        <div>
-            yjg
-        </div>
+        <>
+            <Img key={key} src={url} alt="" />
+        </>
     )
 }
 
