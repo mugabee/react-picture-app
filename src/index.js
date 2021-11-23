@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ImageProvider } from './context/provider'
 
 ReactDOM.render(
   <React.StrictMode>
+    <ImageProvider>
     <App />
+    </ImageProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

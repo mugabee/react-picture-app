@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from "./component/Header";
 import Loader from "./component/Loader";
 import UnsplashImage from "./component/UnsplashImage";
@@ -6,6 +6,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { imagecontext } from './context/contex';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -31,36 +32,36 @@ const WrapperImages = styled.section`
 
 const App = () => {
 
-  const [images, setImage] = useState([]);
+  const {image, setImages, searchPhotos} = useContext(imagecontext)
 
-  useEffect(() => {
-    fetchImages();
-  }, [])
+   useEffect(() => {
+     fetchImages();
+   }, [])
 
-  const fetchImages = (count = 10) => {
-    const apiRoot = "https://api.unsplash.com";
-    const accessKey = process.env.REACT_APP_ACCESSKEY;
+   const fetchImages = (count = 50) => {
+     const apiRoot = "https://api.unsplash.com";
+     const accessKey = process.env.REACT_APP_ACCESSKEY;
 
-    axios
-      .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
-      .then(res => {
-        setImage([...images, ...res.data]);
-      })
-  }
+     axios
+       .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
+       .then(res => {
+         setImages([...image, ...res.data]);
+       })
+   }
 
 
   return (
-    <div>
+    <div className="bg-gray-700">
       <Header />
       <GlobalStyle />
       <InfiniteScroll
-        dataLength={images.length}
+        dataLength={image.length}
         next={fetchImages}
         hasMore={true}
         loader={<Loader />}
       >
         <WrapperImages>
-          {images.map(image => (
+          {image.map(image => (
             <UnsplashImage url={image.urls.thumb} key={image.id} />
           ))}
         </WrapperImages>
