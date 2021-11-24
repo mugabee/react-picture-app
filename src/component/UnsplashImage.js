@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Img = styled.img`
   width: 100%;
@@ -6,10 +7,13 @@ const Img = styled.img`
   object-fit: cover;
 `;
 
-const UnsplashImage = ({ url, key }) => {
+const UnsplashImage = ({ image }) => {
+    const {urls, id} = image
     return (
         <>
-            <Img key={key} src={url} alt="" />
+        <Link to={`/Description/${id}`}>
+            <Img className="gap-10" key={id} src={urls.thumb} alt="" />
+        </Link>
         </>
     )
 }

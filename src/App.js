@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import Header from "./component/Header";
 import Loader from "./component/Loader";
 import UnsplashImage from "./component/UnsplashImage";
-import axios from 'axios';
-import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { imagecontext } from './context/contex';
+import axios from "axios";
+import styled from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { imagecontext } from "./context/contex";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Description from "./component/Description";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -29,46 +31,60 @@ const WrapperImages = styled.section`
   grid-auto-rows: 300px;
 `;
 
-
 const App = () => {
+  const { image, setImages, searchPhotos } = useContext(imagecontext);
 
-  const {image, setImages, searchPhotos} = useContext(imagecontext)
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
-   useEffect(() => {
-     fetchImages();
-   }, [])
+  const fetchImages = (count = 50) => {
+    const apiRoot = "https://api.unsplash.com";
+    const accessKey = process.env.REACT_APP_ACCESSKEY;
 
-   const fetchImages = (count = 50) => {
-     const apiRoot = "https://api.unsplash.com";
-     const accessKey = process.env.REACT_APP_ACCESSKEY;
-
-     axios
-       .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
-       .then(res => {
-         setImages([...image, ...res.data]);
-       })
-   }
-
+    axios
+      .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
+      .then((res) => {
+        setImages([...image, ...res.data]);
+      });
+  };
 
   return (
-    <div className="bg-gray-700">
-      <Header />
-      <GlobalStyle />
-      <InfiniteScroll
-        dataLength={image.length}
-        next={fetchImages}
-        hasMore={true}
-        loader={<Loader />}
-      >
-        <WrapperImages>
-          {image.map(image => (
-            <UnsplashImage url={image.urls.thumb} key={image.id} />
-          ))}
-        </WrapperImages>
-      </InfiniteScroll>
-      
-    </div>
-  )
-}
+    <BrowserRouter>
+      <div className="bg-gray-700">
+        <Routes>
+          <Route
+            path="/Description/:id"
+            element={<Description />}
+            exact
+          ></Route>
+          <Route
+            path="/"
+            element={
+              <>
+                {" "}
+                <Header />
+                <GlobalStyle />
+                <InfiniteScroll
+                  dataLength={image.length}
+                  next={fetchImages}
+                  hasMore={true}
+                  loader={<Loader />}
+                >
+                  <WrapperImages className=" ">
+                    {image.map((image) => (
+                      <UnsplashImage image={image} />
+                    ))}
+                  </WrapperImages>
+                </InfiniteScroll>
+              </>
+            }
+            exact
+          ></Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
